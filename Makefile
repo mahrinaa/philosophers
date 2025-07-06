@@ -16,8 +16,11 @@ SRC_DIR = srcs
 INCLUDE = includes
 
 SRC = $(SRC_DIR)/main.c \
+	  $(SRC_DIR)/init.c \
       $(SRC_DIR)/philo.c \
 	  $(SRC_DIR)/parser.c \
+	  $(SRC_DIR)/monitoring.c \
+	  $(SRC_DIR)/eating.c \
       $(SRC_DIR)/utils.c
 
 OBJ = $(SRC:.c=.o)
