@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:18 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/06 21:44:11 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/07 01:11:08 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void *philo_routine(void *arg)
 		usleep(1000); //pasue pour desynchro les philo pairs
 	while (!check_death(phi->rules))
 	{
+		if (phi->rules->must_eat > 0 && phi->meals_eaten >= phi->rules->must_eat)
+			break;
 		display_action(phi, "is thinking");
 		philo_eat_cycle(phi);
 		if (check_death(phi->rules))
@@ -56,21 +58,6 @@ void	*one_philo_case(t_philo *philo)
 	return (NULL);
 	
 }
-
-//creation threead poru chaque philo
-static void	create_philos(t_rules *rules)
-{
-	int i;
-
-	i = 0;
-	while (i < rules->nb_philos)
-	{
-		if (pthread_create(&rules->philos[i].thread, NULL, philo_routine, &rules->philos[i]))
-			exit_print_error("Error: failed to create philosopher thread");
-		usleep(100);
-		i++;
-	}
-}
 //qttend que tous les philos finissent leurs role, attqnd que chacun quitte la table proprement
 static void	join_philos(t_rules *rules)
 {
@@ -87,11 +74,21 @@ static void	join_philos(t_rules *rules)
 
 void	start_simulation(t_rules *rules)
 {
+	int			i;
 	pthread_t	monitor;
 
-	create_philos(rules); //cree les philos
-	if (pthread_create(&monitor, NULL, monitor_routine, rules)) //cree thread e surveillance monitor
-		exit_print_error("Error: failed to create monitor thread");
-	pthread_join(monitor, NULL); //att mpniteur termine
-	join_philos(rules); //attend tous les philos terminent
+	i = 0;
+	while (i < rules->nb_philos)
+	{
+		if (pthread_create(&rules->philos[i].thread, NULL,
+				philo_routine, &rules->philos[i]))
+			exit_print_error("Error : failed to create philosopher thread");
+		usleep (100);
+		i++;
+	}
+	if (pthread_create(&monitor, NULL, monitor_routine, rules))
+		exit_print_error("Error : failed to create monitor thread");
+	if (pthread_join(monitor, NULL))
+		exit_print_error("Error : monitor thread join failed");
+	join_philos(rules);
 }

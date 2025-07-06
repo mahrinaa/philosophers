@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 06:15:55 by mai               #+#    #+#             */
-/*   Updated: 2025/07/06 21:46:22 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/07 00:33:02 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,12 @@ void	*monitor_routine(void *arg)
 			stopped = 1; //si philo meurt arrete de surveiller
 		pthread_mutex_unlock(&rules->death_mutex); //si tlm finit de manger
 		if (!stopped && check_philos(rules))
+		{
+			pthread_mutex_lock(&rules->death_mutex);
+			rules->philo_died = 1;
+			pthread_mutex_unlock(&rules->death_mutex);
 			break ;
+		}
 		usleep (200); //pause pour eviter de surchager
 	}
 	return (NULL);
