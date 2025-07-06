@@ -6,12 +6,13 @@
 /*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:23 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/06 06:59:14 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/06 21:49:16 by mai              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+//libere memoire et detruit tous les mutex
 void	free_rules(t_rules *rules)
 {
 	int	i;
@@ -22,23 +23,21 @@ void	free_rules(t_rules *rules)
 	{
 		i = 0;
 		while (i < rules->nb_philos)
-			pthread_mutex_destroy(&rules->forks[i++]);
-		free(rules->forks);
+			pthread_mutex_destroy(&rules->forks[i++]); //detruit tous les mutedx de fourchetters
+		free(rules->forks);  //liberer tableau des fourchettes
 	}
 	if (rules->philos)
 	{
 		i = 0;
 		while (i < rules->nb_philos)
-			pthread_mutex_destroy(&rules->philos[i++].timing_mutex);
-		free(rules->philos);
+			pthread_mutex_destroy(&rules->philos[i++].timing_mutex); //detruiit chqaue mutex perso
+		free(rules->philos); //libere structure des philos
 	}
-	pthread_mutex_destroy(&rules->print_mutex);
-	pthread_mutex_destroy(&rules->death_mutex);
-	pthread_mutex_destroy(&rules->meal_check);
-	free(rules);
+	pthread_mutex_destroy(&rules->print_mutex); //mutex global daffichage
+	pthread_mutex_destroy(&rules->death_mutex); //mutex tester la mort
+	pthread_mutex_destroy(&rules->meal_check); //mutex verif repas
+	free(rules); //libere structure rules
 }
-
-#include "philo.h"
 
 int	main(int argc, char **argv)
 {

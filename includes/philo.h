@@ -6,7 +6,7 @@
 /*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:31 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/06 07:06:40 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/06 22:04:15 by mai              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,11 @@ void		ft_putstr_fd(char *str, int fd);
 int			ft_atoi(const char *str);
 long long	get_current_time_in_ms(void);
 int			check_death(t_rules *rules);
-void		smart_sleep(int time_in_ms, t_philo *philo);
-void		print_action(t_philo *philo, char *action);
-int			is_dead(t_rules *rules);
+void		sleep_if_alive(int time_in_ms, t_philo *philo);
+void		display_action(t_philo *philo, const char *msg);
+int			check_death_status(t_rules *rules);
+void		print_error_and_free(char *msg, t_rules *rules);
+void		exit_print_error(char *msg);
 
 
 //init.c

@@ -6,7 +6,7 @@
 /*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 06:24:30 by mai               #+#    #+#             */
-/*   Updated: 2025/07/06 07:03:47 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/06 21:21:29 by mai              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	start_eating(t_philo *philo)
 {
 	long long	now;
 
-	print_action(philo, "is eating");
+	display_action(philo, "is eating");
 	now = get_current_time_in_ms();
 	pthread_mutex_lock(&philo->timing_mutex);
 	philo->last_meal = now;
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->timing_mutex);
-	smart_sleep(philo->rules->time_to_eat, philo);
+	sleep_if_alive(philo->rules->time_to_eat, philo);
 }
 
 
@@ -30,13 +30,13 @@ int	grab_forks(t_philo *philo, pthread_mutex_t *first, pthread_mutex_t *second)
 {
 	if (pthread_mutex_lock(first))
 		return (0);
-	print_action(philo, "has taken a fork");
+	display_action(philo, "has taken a fork");
 	if (philo->rules->philo_died || pthread_mutex_lock(second))
 	{
 		pthread_mutex_unlock(first);//repose la 1er fourchette pour eviter deadlock
 		return (0);
 	}
-	print_action(philo, "has taken a fork");
+	display_action(philo, "has taken a fork");
 	return (1);
 }
 

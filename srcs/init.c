@@ -6,41 +6,54 @@
 /*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:41:46 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/06 07:10:11 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/06 22:02:07 by mai              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	init_forks_mutex(t_rules *rules)
+//init un mutex pour chqaue fourchette
+void	init_forks_mutex(t_rules *rules)
 {
 	int i;
 
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->nb_philos);
 	if (!rules->forks)
-		return (1);
+		print_error_and_free("Error: malloc failed for forks", rules);
 	i = 0;
 	while (i < rules->nb_philos)
 	{
 		if (pthread_mutex_init(&rules->forks[i], NULL))
 		{
+			// Si l’initialisation d’un mutex échoue,
+			// on détruit ceux déjà créés pour éviter les fuites
 			while (--i >= 0)
 				pthread_mutex_destroy(&rules->forks[i]);
 			free(rules->forks);
-			return (1);
+			rules->forks = NULL;
+			print_error_and_free("Error: mutex init failed for forks", rules);
 		}
 		i++;
 	}
-	return (0);
 }
 
 void	init_global_mutex(t_rules *rules)
 {
-	pthread_mutex_init(&rules->print_mutex, NULL);
-	pthread_mutex_init(&rules->death_mutex, NULL);
-	pthread_mutex_init(&rules->meal_check, NULL);
+	if (pthread_mutex_init(&rules->print_mutex, NULL))
+		print_error_and_free("Error: mutex init failed (print)", rules);
+	if (pthread_mutex_init(&rules->death_mutex, NULL))
+	{
+		pthread_mutex_destroy(&rules->print_mutex);
+		print_error_and_free("Error: mutex init failed (death)", rules);
+	}
+	if (pthread_mutex_init(&rules->meal_check, NULL))
+	{
+		pthread_mutex_destroy(&rules->print_mutex);
+		pthread_mutex_destroy(&rules->death_mutex);
+		print_error_and_free("Error: mutex init failed (meal_check)", rules);
+	}
 }
-
+//config param de la simulation
 static void	set_rules_values(t_rules *rules, int ac, char **av)
 {
 	rules->nb_philos = ft_atoi(av[1]);
@@ -67,8 +80,7 @@ t_rules *init_sim_rules(int ac, char **av)
 	if (!rules)
 		return (NULL);
 	set_rules_values(rules, ac, av);
-	if (init_forks_mutex(rules))
-		return (free(rules), NULL);
+	init_forks_mutex(rules);
 	init_global_mutex(rules);
 	return (rules);
 }

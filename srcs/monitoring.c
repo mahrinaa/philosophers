@@ -6,7 +6,7 @@
 /*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 06:15:55 by mai               #+#    #+#             */
-/*   Updated: 2025/07/06 07:02:43 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/06 21:46:22 by mai              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,24 @@ int	check_philos(t_rules *rules)
 	return (0);
 }
 
-//monitor
+//monitor surveille en boucle letat des philo, verife si qqn meurt
 void	*monitor_routine(void *arg)
 {
 	t_rules *rules;
 	int		stopped;
 
-	rules = (t_rules *)arg;
-	stopped = 0;
+	rules = (t_rules *)arg; //recuperer regles du prog
+	stopped = 0; //flag darret
 
 	while (!stopped)
 	{
 		pthread_mutex_lock(&rules->death_mutex);
 		if (rules->philo_died)
-			stopped = 1;
-		pthread_mutex_unlock(&rules->death_mutex);
+			stopped = 1; //si philo meurt arrete de surveiller
+		pthread_mutex_unlock(&rules->death_mutex); //si tlm finit de manger
 		if (!stopped && check_philos(rules))
 			break ;
-		usleep (200);
+		usleep (200); //pause pour eviter de surchager
 	}
 	return (NULL);
 }

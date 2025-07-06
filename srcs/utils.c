@@ -6,11 +6,31 @@
 /*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:27 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/06 07:05:59 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/06 22:03:27 by mai              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+void	print_error_and_free(char *msg, t_rules *rules)
+{
+	free_rules(rules);         // Libère tout ce qui a déjà été initialisé
+	exit_print_error(msg);     // Affiche et quitte
+}
+
+void	exit_print_error(char *msg)
+{
+	int	i;
+
+	i = 0;
+	while (msg && msg[i])
+	{
+		write(STDERR_FILENO, &msg[i], 1);
+		i++;
+	}
+	write(STDERR_FILENO, "\n", 1);
+	exit(1);
+}
 
 long long	get_current_time_in_ms(void)
 {
@@ -64,36 +84,44 @@ void	ft_putstr_fd(char *str, int fd)
 	}
 }
 
-void	print_action(t_philo *philo, char *action)
+void	display_action(t_philo *philo, const char *msg)
 {
-	if (is_dead(philo->rules))
-		return ;
+	long long	time;
+
 	pthread_mutex_lock(&philo->rules->print_mutex);
-	printf("%lld %d %s\n",
-		get_current_time_in_ms() - philo->rules->start_time,
-		philo->id, action);
+	if (!check_death_status(philo->rules))
+	{
+		time = get_current_time_in_ms() - philo->rules->start_time;
+		printf("%lld %d %s\n", time, philo->id, msg);
+	}
 	pthread_mutex_unlock(&philo->rules->print_mutex);
 }
 
-int	is_dead(t_rules *rules)
+int	check_death_status(t_rules *rules)
 {
-	int	status;
-
 	pthread_mutex_lock(&rules->death_mutex);
-	status = rules->philo_died;
+	if (rules->philo_died)
+		return (pthread_mutex_unlock(&rules->death_mutex), 1);
 	pthread_mutex_unlock(&rules->death_mutex);
-	return (status);
+	return (0);
 }
 
-void	smart_sleep(int time_in_ms, t_philo *philo)
+void	sleep_if_alive(int time_in_ms, t_philo *philo)
 {
-	long long	start;
+	long long	end_time;
+	long long	current_time;
+	int			time_left;
 
-	start = get_current_time_in_ms();
-	while (!is_dead(philo->rules))
+	end_time = get_current_time_in_ms() + time_in_ms;
+	while (!check_death_status(philo->rules))
 	{
-		if (get_current_time_in_ms() - start >= time_in_ms)
+		current_time = get_current_time_in_ms();
+		time_left = end_time - current_time;
+		if (time_left <= 0)
 			break ;
-		usleep(500);
+		if (time_left > 5)
+			usleep(2000);
+		else
+			usleep(500);
 	}
 }
