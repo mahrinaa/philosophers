@@ -6,29 +6,27 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 05:01:52 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 05:01:56 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 08:08:08 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-//met a jour letat global philo_diead 
 void	handle_death(t_rules *rules, int i)
 {
-	long long	time; //calcul du tps ecoulee, marque lheure du deces
+	long long	time;
+
 	if (!rules)
 		return ;
 	pthread_mutex_lock(&rules->death_mutex);
-	if (rules->philo_died) //si un philo deja mort
+	if (rules->philo_died)
 		return ((void)pthread_mutex_unlock(&rules->death_mutex));
-
-	rules->philo_died = 1; //sim fini a cause d1 mort
+	rules->philo_died = 1;
 	pthread_mutex_unlock(&rules->death_mutex);
-	pthread_mutex_lock(&rules->print_mutex);//lock laffiche des msg, 1 seul thread peut parler
-
+	pthread_mutex_lock(&rules->print_mutex);
 	time = get_current_time_in_ms() - rules->start_time;
-	printf("%lld %d died\n", time, rules->philos[i].id);//annonce la mort
-	pthread_mutex_unlock(&rules->print_mutex);//liberer la parole
+	printf("%lld %d died\n", time, rules->philos[i].id);
+	pthread_mutex_unlock(&rules->print_mutex);
 }
 
 void	handle_done(t_rules *rules)
@@ -36,16 +34,14 @@ void	handle_done(t_rules *rules)
 	if (!rules)
 		return ;
 	pthread_mutex_lock(&rules->death_mutex);
-	rules->philo_died = 1;//fin normale
+	rules->philo_died = 1;
 	pthread_mutex_unlock(&rules->death_mutex);
-	
 }
 
-//verifie si assez manger 
 static int	check_full(t_rules *rules)
 {
 	int	i;
-	int	full; //philos ont mangé au moins must_eat fois
+	int	full;
 
 	if (rules->must_eat <= 0)
 		return (0);
@@ -55,25 +51,24 @@ static int	check_full(t_rules *rules)
 	{
 		pthread_mutex_lock(&rules->philos[i].timing_mutex);
 		if (rules->philos[i].meals_eaten >= rules->must_eat)
-			full++; //compte philo qui a fini son repas
+			full++;
 		pthread_mutex_unlock(&rules->philos[i].timing_mutex);
-		i++; //passe au philo suivant
+		i++;
 	}
-	return (full == rules->nb_philos); //tlm est full, a atteit son quota
+	return (full == rules->nb_philos);
 }
 
-//verifie si un philo est mort
 int	check_death(t_rules *rules)
 {
 	int			i;
-	long long 	time; //tmps ecoule depuis dernier repas
+	long long 	time;
 
 	i = 0;
 	while (i < rules->nb_philos)
 	{
-		pthread_mutex_lock(&rules->philos[i].timing_mutex); //verouille lacces aux donnes last_meal
+		pthread_mutex_lock(&rules->philos[i].timing_mutex);
 		time = get_current_time_in_ms() - rules->philos[i].last_meal;
-		if (time > rules->time_to_die) // si depasse time_to_die = mort
+		if (time > rules->time_to_die)
 		{
 			pthread_mutex_unlock(&rules->philos[i].timing_mutex);
 			handle_death(rules, i);
@@ -85,7 +80,7 @@ int	check_death(t_rules *rules)
 	return (0);
 }
 
-int	check_philos(t_rules *rules)
+int	check_end_condition(t_rules *rules)
 {
 	if (check_death(rules))
 		return (1);
@@ -98,29 +93,28 @@ int	check_philos(t_rules *rules)
 	return (0);
 }
 
-//monitor surveille en boucle letat des philo, verife si qqn meurt
 void	*monitor_routine(void *arg)
 {
 	t_rules *rules;
 	int		stopped;
 
-	rules = (t_rules *)arg; //recuperer regles du prog
-	stopped = 0; //flag darret
+	rules = (t_rules *)arg;
+	stopped = 0;
 
 	while (!stopped)
 	{
 		pthread_mutex_lock(&rules->death_mutex);
 		if (rules->philo_died)
-			stopped = 1; //si philo meurt arrete de surveiller
-		pthread_mutex_unlock(&rules->death_mutex); //si tlm finit de manger
-		if (!stopped && check_philos(rules))
+			stopped = 1;
+		pthread_mutex_unlock(&rules->death_mutex);
+		if (!stopped && check_end_condition(rules))
 		{
 			pthread_mutex_lock(&rules->death_mutex);
 			rules->philo_died = 1;
 			pthread_mutex_unlock(&rules->death_mutex);
 			break ;
 		}
-		usleep (200); //pause pour eviter de surchager
+		usleep (200);
 	}
 	return (NULL);
 }

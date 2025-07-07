@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:31 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 04:50:12 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 08:11:15 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct	s_rules
 
 //utils.c
 void		ft_putstr_fd(char *str, int fd);
-//int			ft_atoi(const char *str);
 long long	get_current_time_in_ms(void);
 int			check_death(t_rules *rules);
 void		sleep_if_alive(int time_in_ms, t_philo *philo);
@@ -90,7 +89,7 @@ void		start_eating(t_philo *philo);
 
 //monitoring.h
 void		*monitor_routine(void *arg);
-int			check_philos(t_rules *rules);
+int			check_end_condition(t_rules *rules);
 void		handle_done(t_rules *rules);
 void		handle_death(t_rules *rules, int i);
 int			check_death(t_rules *rules);

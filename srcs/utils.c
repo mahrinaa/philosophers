@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:27 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 02:50:04 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 08:11:08 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ long long	get_current_time_in_ms(void)
 
 void	print_error_and_free(char *msg, t_rules *rules)
 {
-	free_rules(rules);         // Libère tout ce qui a déjà été initialisé
-	exit_print_error(msg);     // Affiche et quitte
+	free_rules(rules);
+	exit_print_error(msg);
 }
 
 void	exit_print_error(char *msg)
@@ -40,36 +40,6 @@ void	exit_print_error(char *msg)
 	write(STDERR_FILENO, "\n", 1);
 	exit(1);
 }
-
-
-/* int	ft_atoi(const char *str)
-{
-	size_t	i;
-	size_t	nb;
-	size_t	sign;
-
-	i = 0;
-	nb = 0;
-	sign = 1;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-	{
-		i++;
-	}
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-		{
-			sign *= -1;
-		}
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		nb = nb * 10 + (str[i] - '0');
-		i++;
-	}
-	return (nb * sign);
-} */
 
 void	ft_putstr_fd(char *str, int fd)
 {
