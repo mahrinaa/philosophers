@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:27 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 01:25:29 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 02:50:04 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	exit_print_error(char *msg)
 }
 
 
-int	ft_atoi(const char *str)
+/* int	ft_atoi(const char *str)
 {
 	size_t	i;
 	size_t	nb;
@@ -69,7 +69,7 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (nb * sign);
-}
+} */
 
 void	ft_putstr_fd(char *str, int fd)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:31 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/06 22:04:15 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/07 02:50:13 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct	s_rules
 
 //utils.c
 void		ft_putstr_fd(char *str, int fd);
-int			ft_atoi(const char *str);
+//int			ft_atoi(const char *str);
 long long	get_current_time_in_ms(void);
 int			check_death(t_rules *rules);
 void		sleep_if_alive(int time_in_ms, t_philo *philo);
