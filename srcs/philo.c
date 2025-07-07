@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:18 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 03:54:19 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 04:03:37 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	*philo_routine(void *arg)
 		{
 			pthread_mutex_unlock(&phi->timing_mutex);
 			usleep (500);
-			break;
+			continue ;
+			//break;
 		}
 		pthread_mutex_unlock(&phi->timing_mutex);
 		display_action(phi, "is thinking");
