@@ -6,13 +6,12 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:41:46 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 04:53:11 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 08:23:29 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-//init un mutex pour chqaue fourchette
 void	init_forks_mutex(t_rules *rules)
 {
 	int i;
@@ -25,8 +24,6 @@ void	init_forks_mutex(t_rules *rules)
 	{
 		if (pthread_mutex_init(&rules->forks[i], NULL))
 		{
-			// Si l’initialisation d’un mutex échoue,
-			// on détruit ceux déjà créés pour éviter les fuites
 			while (--i >= 0)
 				pthread_mutex_destroy(&rules->forks[i]);
 			free(rules->forks);
@@ -53,18 +50,16 @@ void	init_global_mutex(t_rules *rules)
 		print_error_and_free("Error: mutex init failed (meal_check)", rules);
 	}
 }
-//config param de la simulation
+
 static void	set_rules_values(t_rules *rules, int ac, char **av)
 {
 	rules->nb_philos = ft_atol(av[1]);
 	rules->time_to_die = ft_atol(av[2]);
 	rules->time_to_eat = ft_atol(av[3]);
 	rules->time_to_sleep = ft_atol(av[4]);
-	rules->must_eat = -1; //pas de limite
+	rules->must_eat = -1;
 	if (ac == 6)
 		rules->must_eat = ft_atol(av[5]);
-	// if (rules->time_to_die < 60 || rules->time_to_eat < 60 || rules->time_to_sleep < 60)
-	// 	exit_print_error("Error : time values must be >= 60ms");
 	rules->philo_died = 0;
 	rules->all_ate = 0;
 	rules->start_time = get_current_time_in_ms();
@@ -72,11 +67,9 @@ static void	set_rules_values(t_rules *rules, int ac, char **av)
 	rules->forks = NULL;
 }
 
-//allouer structure t_rules avec les parametres generaux
-
-t_rules *init_sim_rules(int ac, char **av)
+t_rules	*init_sim_rules(int ac, char **av)
 {
-	t_rules *rules;
+	t_rules	*rules;
 
 	rules = malloc(sizeof(t_rules));
 	if (!rules)
@@ -91,11 +84,11 @@ static void	init_one_philo(t_philo *philo, t_rules *rules, int i)
 {
 	philo->id = i + 1;
 	philo->meals_eaten = 0;
-	philo->last_meal = rules->start_time; //dernier repas a lheure du depart du prog
-	philo->rules = rules; //acces aux regles communes
+	philo->last_meal = rules->start_time;
+	philo->rules = rules;
 	philo->left_fork = &rules->forks[i];
-	philo->right_fork = &rules->forks[(i + 1) % rules->nb_philos]; //fourchette droite du philo suivant
-	pthread_mutex_init(&philo->timing_mutex, NULL); //proteger les acces a last meal et meal eaten
+	philo->right_fork = &rules->forks[(i + 1) % rules->nb_philos];
+	pthread_mutex_init(&philo->timing_mutex, NULL);
 }
 
 t_philo	*init_philo(t_rules *rules)

@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:18 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:17:09 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 08:23:41 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*philo_routine(void *arg)
 		return (one_philo_case(phi));
 	if (phi->id % 2 == 0)
 		usleep(1000);
-	
+
 	while (!phi->rules->philo_died)
 	{
 		pthread_mutex_lock(&phi->timing_mutex);
@@ -84,7 +84,7 @@ void	start_simulation(t_rules *rules)
 	i = 0;
 	while (i < rules->nb_philos)
 	{
-		set_last_meal(&rules->philos[i]); //init last_meal avant cree le thread
+		set_last_meal(&rules->philos[i]);
 		if (pthread_create(&rules->philos[i].thread, NULL,
 				philo_routine, &rules->philos[i]))
 			exit_print_error("Error : failed to create philosopher thread");

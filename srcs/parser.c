@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:36 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 04:50:12 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 08:24:46 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,9 @@ char	valid_argument(int argc, char **argv)
 		ft_putstr_fd("Error : expected 4 or 5 arguments\n", 2);
 		return (0);
 	}	
-	i = 1;	
+	i = 1;
 	while (i < argc)
 	{
-		if (!ft_atol(argv[i]))
-		{
-			ft_putstr_fd("Error : invalid argument\n", 2);
-			return (0);
-		}
 		value = ft_atol(argv[i]);
 		if ((i == 1 && (value < 1 || value > 200)) ||
 			(i > 1 && value <= 0))
