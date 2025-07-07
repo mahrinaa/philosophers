@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:36 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:24:46 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 09:10:18 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ char	valid_argument(int argc, char **argv)
 	while (i < argc)
 	{
 		value = ft_atol(argv[i]);
-		if ((i == 1 && (value < 1 || value > 200)) ||
-			(i > 1 && value <= 0))
+		if (value <= 0)
 		{
 			ft_putstr_fd("Error: invalid argument value\n", 2);
 			return (0);

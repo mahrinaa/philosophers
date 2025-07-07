@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:41:46 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:23:29 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 09:40:16 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static void	set_rules_values(t_rules *rules, int ac, char **av)
 	rules->time_to_die = ft_atol(av[2]);
 	rules->time_to_eat = ft_atol(av[3]);
 	rules->time_to_sleep = ft_atol(av[4]);
+	rules->time_to_think = (rules->time_to_die - rules->time_to_eat - \
+		rules->time_to_sleep) * 0.9;
 	rules->must_eat = -1;
 	if (ac == 6)
 		rules->must_eat = ft_atol(av[5]);

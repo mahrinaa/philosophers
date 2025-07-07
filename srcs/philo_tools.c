@@ -6,11 +6,21 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 01:14:34 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:38:26 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 10:11:23 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+int	is_philo_dead(t_philo *philo)
+{
+	int	philo_dead;
+
+	pthread_mutex_lock(&philo->rules->death_mutex);
+	philo_dead = philo->rules->philo_died;
+	pthread_mutex_unlock(&philo->rules->death_mutex);
+	return (philo_dead);
+}
 
 void	display_action(t_philo *philo, const char *msg)
 {

@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 05:01:52 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:49:27 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 10:42:06 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	check_end_condition(t_rules *rules)
 	if (check_full(rules))
 	{
 		handle_done(rules);
-		//usleep(2000);
 		return (1);
 	}
 	return (0);

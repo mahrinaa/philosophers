@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:31 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:11:15 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 10:11:39 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <stdbool.h>
 # include <sys/time.h>
 # include <pthread.h>
-
 
 
 typedef struct s_philo
@@ -45,6 +44,7 @@ typedef struct	s_rules
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					time_to_die;
+	int					time_to_think;
 	int					must_eat;
 	int					all_ate;
 	long long 			start_time;
@@ -94,5 +94,7 @@ void		handle_done(t_rules *rules);
 void		handle_death(t_rules *rules, int i);
 int			check_death(t_rules *rules);
 
+//philo_tools.c
+int			is_philo_dead(t_philo *philo);
 
 #endif

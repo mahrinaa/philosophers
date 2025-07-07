@@ -6,7 +6,7 @@
 #    By: mapham <mapham@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/07 05:02:16 by mapham            #+#    #+#              #
-#    Updated: 2025/07/07 05:02:27 by mapham           ###   ########.fr        #
+#    Updated: 2025/07/07 09:54:19 by mapham           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRC = $(SRC_DIR)/init.c \
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -g3
 FLAGS = -I$(INCLUDE)
 
 .c.o:

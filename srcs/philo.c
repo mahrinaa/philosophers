@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:18 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:23:41 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 10:37:25 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,26 @@ void	*philo_routine(void *arg)
 
 	if (phi->rules->nb_philos == 1)
 		return (one_philo_case(phi));
+	display_action(phi, "is thinking");
 	if (phi->id % 2 == 0)
-		usleep(1000);
-
-	while (!phi->rules->philo_died)
+		usleep(100);
+	while (!is_philo_dead(phi))
 	{
 		pthread_mutex_lock(&phi->timing_mutex);
 		if (phi->rules->must_eat > 0 &&
 			phi->meals_eaten >= phi->rules->must_eat)
 		{
 			pthread_mutex_unlock(&phi->timing_mutex);
-			usleep (500);
+			// usleep(500);
 			continue ;
 		}
 		pthread_mutex_unlock(&phi->timing_mutex);
-		display_action(phi, "is thinking");
 		philo_eat_cycle(phi);
 		display_action(phi, "is sleeping");
 		sleep_if_alive(phi->rules->time_to_sleep, phi);
+		display_action(phi, "is thinking");
+		if (phi->rules->nb_philos % 2 != 0)
+			sleep_if_alive(phi->rules->time_to_think, phi);
 	}
 	return (NULL);
 }
@@ -88,7 +90,6 @@ void	start_simulation(t_rules *rules)
 		if (pthread_create(&rules->philos[i].thread, NULL,
 				philo_routine, &rules->philos[i]))
 			exit_print_error("Error : failed to create philosopher thread");
-		usleep (100);
 		i++;
 	}
 	if (pthread_create(&monitor, NULL, monitor_routine, rules))
