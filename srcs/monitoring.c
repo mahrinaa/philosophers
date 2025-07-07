@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 05:01:52 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:08:08 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 08:49:27 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_death(t_rules *rules)
 	{
 		pthread_mutex_lock(&rules->philos[i].timing_mutex);
 		time = get_current_time_in_ms() - rules->philos[i].last_meal;
-		if (time > rules->time_to_die)
+		if (time >= rules->time_to_die)
 		{
 			pthread_mutex_unlock(&rules->philos[i].timing_mutex);
 			handle_death(rules, i);
@@ -87,7 +87,7 @@ int	check_end_condition(t_rules *rules)
 	if (check_full(rules))
 	{
 		handle_done(rules);
-		usleep(2000);
+		//usleep(2000);
 		return (1);
 	}
 	return (0);
@@ -114,7 +114,7 @@ void	*monitor_routine(void *arg)
 			pthread_mutex_unlock(&rules->death_mutex);
 			break ;
 		}
-		usleep (200);
+		usleep (100);
 	}
 	return (NULL);
 }
