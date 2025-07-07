@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:41:46 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 02:49:53 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 04:42:09 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@ static void	set_rules_values(t_rules *rules, int ac, char **av)
 	rules->must_eat = -1; //pas de limite
 	if (ac == 6)
 		rules->must_eat = is_positive_int(av[5]);
-	if (rules->nb_philos < 1 || rules->nb_philos > 200)
-		exit_print_error("Error : number of philos must be between 1 and 200");
-	if (rules->time_to_die <= 0 || rules->time_to_eat <= 0 ||
-		rules->time_to_sleep <= 0 || (ac == 6 && rules->must_eat <= 0))
-		exit_print_error("Error : invalid time or must_eat value");
+	// if (rules->nb_philos < 1 || rules->nb_philos > 200)
+	// 	exit_print_error("Error : number of philos must be between 1 and 200");
+	// if (rules->time_to_die <= 0 || rules->time_to_eat <= 0 ||
+	// 	rules->time_to_sleep <= 0 || (ac == 6 && rules->must_eat <= 0))
+	// 	exit_print_error("Error : invalid time or must_eat value");
+	// if (rules->time_to_die < 60 || rules->time_to_eat < 60 || rules->time_to_sleep < 60)
+	// 	exit_print_error("Error : time values must be >= 60ms");
 	rules->philo_died = 0;
 	rules->all_ate = 0;
 	rules->start_time = get_current_time_in_ms();

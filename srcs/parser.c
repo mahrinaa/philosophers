@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:36 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/06 21:04:29 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/07 04:42:39 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,12 @@ long	is_positive_int(const char *str)
 
 char	valid_argument(int argc, char **argv)
 {
-	int i;
+	int 	i;
+	long	value;
 
 	if (argc < 5 || argc > 6)
 	{
-		ft_putstr_fd("Error : Wrong numbers of arguments", 2);
+		ft_putstr_fd("Error : expected 4 or 5 arguments\n", 2);
 		return (0);
 	}	
 	i = 1;	
@@ -53,7 +54,14 @@ char	valid_argument(int argc, char **argv)
 	{
 		if (!is_positive_int(argv[i]))
 		{
-			ft_putstr_fd("Error : Invalid argument", 2);
+			ft_putstr_fd("Error : invalid argument (non-numeric)\n", 2);
+			return (0);
+		}
+		value = is_positive_int(argv[i]);
+		if ((i == 1 && (value < 1 || value > 200)) ||
+			(i > 1 && value <= 0))
+		{
+			ft_putstr_fd("Error: invalid argument value\n", 2);
 			return (0);
 		}
 		i++;
