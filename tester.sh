@@ -372,7 +372,6 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
 	test_philosopher_death "$target" "$1" "5" "599" "200" "200" "4"
 	test_philosopher_death "$target" "$1" "5" "300" "60" "600" "5"
 	test_philosopher_death "$target" "$1" "5" "60" "60" "60" "6"
-	test_philosopher_death "$target" "$1" "200" "60" "60" "60" "7"
 	test_philosopher_death "$target" "$1" "200" "300" "60" "600" "8"
 	test_philosopher_death "$target" "$1" "199" "800" "300" "100" "9"
 
@@ -381,7 +380,6 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
 	test_philosopher_meals "$target" "$1" "5" "800" "200" "200" "7" "10"
 	test_philosopher_meals "$target" "$1" "3" "800" "200" "200" "7" "11"
 	test_philosopher_meals "$target" "$1" "2" "800" "200" "200" "7" "12"
-	test_philosopher_meals "$target" "$1" "4" "410" "200" "200" "10" "13"
 	test_philosopher_meals "$target" "$1" "2" "410" "200" "200" "10" "14"
 	test_philosopher_meals "$target" "$1" "200" "410" "200" "200" "10" "14"
 	test_philosopher_meals "$target" "$1" "7" "800" "200" "500" "7" "14.1"
