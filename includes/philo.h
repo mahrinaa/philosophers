@@ -6,10 +6,9 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:31 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 10:11:39 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:40:38 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -35,7 +34,7 @@ typedef struct s_philo
 	pthread_mutex_t		timing_mutex;
 	struct s_rules		*rules;
 
-}			  t_philo;
+}				t_philo;
 
 
 typedef struct	s_rules
@@ -49,7 +48,6 @@ typedef struct	s_rules
 	int					all_ate;
 	long long 			start_time;
 	int					philo_died;
-	
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		death_mutex;
@@ -67,7 +65,6 @@ void		display_action(t_philo *philo, const char *msg);
 int			check_death_status(t_rules *rules);
 void		print_error_and_free(char *msg, t_rules *rules);
 void		exit_print_error(char *msg);
-
 
 //init.c
 void		init_data(char **argv, t_rules *data);

@@ -6,11 +6,24 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:27 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 08:11:08 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:38:38 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+void	display_action(t_philo *philo, const char *msg)
+{
+	long long	time;
+
+	pthread_mutex_lock(&philo->rules->print_mutex);
+	if (!check_death_status(philo->rules))
+	{
+		time = get_current_time_in_ms() - philo->rules->start_time;
+		printf("%lld %d %s\n", time, philo->id, msg);
+	}
+	pthread_mutex_unlock(&philo->rules->print_mutex);
+}
 
 long long	get_current_time_in_ms(void)
 {

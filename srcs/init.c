@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:41:46 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 09:40:16 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:31:00 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	init_forks_mutex(t_rules *rules)
 {
-	int i;
+	int	i;
 
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->nb_philos);
 	if (!rules->forks)
@@ -82,21 +82,11 @@ t_rules	*init_sim_rules(int ac, char **av)
 	return (rules);
 }
 
-static void	init_one_philo(t_philo *philo, t_rules *rules, int i)
-{
-	philo->id = i + 1;
-	philo->meals_eaten = 0;
-	philo->last_meal = rules->start_time;
-	philo->rules = rules;
-	philo->left_fork = &rules->forks[i];
-	philo->right_fork = &rules->forks[(i + 1) % rules->nb_philos];
-	pthread_mutex_init(&philo->timing_mutex, NULL);
-}
 
 t_philo	*init_philo(t_rules *rules)
 {
-	t_philo *philo;
-	int		 i;
+	t_philo	*philo;
+	int		i;
 
 	philo = malloc((sizeof(t_philo) * rules->nb_philos));
 	if (!philo)
@@ -104,7 +94,13 @@ t_philo	*init_philo(t_rules *rules)
 	i = 0;
 	while (i < rules->nb_philos)
 	{
-		init_one_philo(&philo[i], rules, i);
+		philo->id = i + 1;
+		philo->meals_eaten = 0;
+		philo->last_meal = rules->start_time;
+		philo->rules = rules;
+		philo->left_fork = &rules->forks[i];
+		philo->right_fork = &rules->forks[(i + 1) % rules->nb_philos];
+		pthread_mutex_init(&philo->timing_mutex, NULL);
 		i++;
 	}
 	rules->philos = philo;

@@ -6,12 +6,11 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:18 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 10:37:25 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:35:22 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
 
 void	set_last_meal(t_philo *philo)
 {
@@ -25,7 +24,6 @@ void	*philo_routine(void *arg)
 	t_philo	*phi;
 
 	phi = (t_philo *)arg;
-
 	if (phi->rules->nb_philos == 1)
 		return (one_philo_case(phi));
 	display_action(phi, "is thinking");
@@ -34,13 +32,9 @@ void	*philo_routine(void *arg)
 	while (!is_philo_dead(phi))
 	{
 		pthread_mutex_lock(&phi->timing_mutex);
-		if (phi->rules->must_eat > 0 &&
+		if (phi->rules->must_eat > 0 && \
 			phi->meals_eaten >= phi->rules->must_eat)
-		{
 			pthread_mutex_unlock(&phi->timing_mutex);
-			// usleep(500);
-			continue ;
-		}
 		pthread_mutex_unlock(&phi->timing_mutex);
 		philo_eat_cycle(phi);
 		display_action(phi, "is sleeping");
