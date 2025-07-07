@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eating.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mai <mai@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 06:24:30 by mai               #+#    #+#             */
-/*   Updated: 2025/07/06 21:21:29 by mai              ###   ########.fr       */
+/*   Updated: 2025/07/07 03:44:45 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,21 @@ void	philo_eat_cycle(t_philo *philo)
 		second = philo->left_fork;
 	}
 	attempts = 0;
-	while (!philo->rules->philo_died && attempts++ < 1000)
+	//while (!philo->rules->philo_died && attempts++ < 1000)
+	while (!check_death_status(philo->rules) && attempts++ < 1000)
 	{
 		if (!grab_forks(philo, first, second))
 		{
 			usleep(100);//attend avant de reeessayer
 			continue ;
 		}
+		// // Re-check après avoir pris les fourchettes
+		// if (check_death_status(philo->rules))
+		// {
+		// 	pthread_mutex_unlock(second);
+		// 	pthread_mutex_unlock(first);
+		// 	break ;
+		// }
 		start_eating(philo); //manger puis
 		pthread_mutex_unlock(second); //liberer fourchette
 		pthread_mutex_unlock(first);

@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 06:15:55 by mai               #+#    #+#             */
-/*   Updated: 2025/07/07 00:33:02 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 03:50:55 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	check_philos(t_rules *rules)
 	if (check_full(rules))
 	{
 		handle_done(rules);
+		usleep(2000);
 		return (1);
 	}
 	return (0);

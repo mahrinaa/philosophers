@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:18 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 01:11:08 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 03:54:19 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,42 @@ void	set_last_meal(t_philo *philo)
 }
 
 //script principal de chaque philo
-void *philo_routine(void *arg)
+void	*philo_routine(void *arg)
 {
 	t_philo	*phi;
 
 	phi = (t_philo *)arg;
-	set_last_meal(phi); //init heure du dernier repas au depart
+	if (phi->rules->nb_philos == 1)
+		return (one_philo_case(phi));
+	if (phi->id % 2 == 0)
+		usleep(1000);
+
+	while (!check_death(phi->rules))
+	{
+		pthread_mutex_lock(&phi->timing_mutex);
+		if (phi->rules->must_eat > 0 && phi->meals_eaten >= phi->rules->must_eat)
+		{
+			pthread_mutex_unlock(&phi->timing_mutex);
+			usleep (500);
+			break;
+		}
+		pthread_mutex_unlock(&phi->timing_mutex);
+		display_action(phi, "is thinking");
+		philo_eat_cycle(phi); // ici meals_eaten est mis à jour
+		if (check_death(phi->rules))
+			break ;
+		display_action(phi, "is sleeping");
+		sleep_if_alive(phi->rules->time_to_sleep, phi);
+	}
+	return (NULL);
+}
+
+/* void *philo_routine(void *arg)
+{
+	t_philo	*phi;
+
+	phi = (t_philo *)arg;
+	//set_last_meal(phi); //init heure du dernier repas au depart
 	if (phi->rules->nb_philos == 1)
 		return (one_philo_case(phi)); //cas si 1 philo
 	if (phi->id % 2 == 0)
@@ -43,7 +73,7 @@ void *philo_routine(void *arg)
 		sleep_if_alive(phi->rules->time_to_sleep, phi); //pause pdt sommeil
 	}
 	return (NULL);
-}
+} */
 
 void	*one_philo_case(t_philo *philo)
 {
@@ -80,6 +110,7 @@ void	start_simulation(t_rules *rules)
 	i = 0;
 	while (i < rules->nb_philos)
 	{
+		set_last_meal(&rules->philos[i]); //init last_meal avant cree le thread
 		if (pthread_create(&rules->philos[i].thread, NULL,
 				philo_routine, &rules->philos[i]))
 			exit_print_error("Error : failed to create philosopher thread");
