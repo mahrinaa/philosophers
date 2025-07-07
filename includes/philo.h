@@ -6,7 +6,7 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:31 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 02:50:13 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 04:50:12 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		exit_print_error(char *msg);
 //init.c
 void		init_data(char **argv, t_rules *data);
 char		valid_argument(int argc, char **argv);
-long		is_positive_int(const char *str);
+long		ft_atol(const char *str);
 
 //philo.c
 void		start_simulation(t_rules *rules);

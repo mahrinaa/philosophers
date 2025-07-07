@@ -6,13 +6,13 @@
 /*   By: mapham <mapham@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 06:52:36 by mapham            #+#    #+#             */
-/*   Updated: 2025/07/07 04:42:39 by mapham           ###   ########.fr       */
+/*   Updated: 2025/07/07 04:50:12 by mapham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-long	is_positive_int(const char *str)
+long	ft_atol(const char *str)
 {
 	long	nb;
 	int		i;
@@ -52,12 +52,12 @@ char	valid_argument(int argc, char **argv)
 	i = 1;	
 	while (i < argc)
 	{
-		if (!is_positive_int(argv[i]))
+		if (!ft_atol(argv[i]))
 		{
-			ft_putstr_fd("Error : invalid argument (non-numeric)\n", 2);
+			ft_putstr_fd("Error : invalid argument\n", 2);
 			return (0);
 		}
-		value = is_positive_int(argv[i]);
+		value = ft_atol(argv[i]);
 		if ((i == 1 && (value < 1 || value > 200)) ||
 			(i > 1 && value <= 0))
 		{
